@@ -1,10 +1,8 @@
 let contendenorPokemones = document.querySelector("#contenedorPokemones");
 
 export async function mostrarPagina(arrayPokemones) {
-  console.log(await arrayPokemones);
   const pokemones = await arrayPokemones;
-  console.log(pokemones.results);
-  await crearLista(contendenorPokemones, 20);
+  await crearLista(contendenorPokemones, pokemones.results.length);
   colocarPokemonsEnLista(pokemones.results);
 }
 
@@ -24,6 +22,5 @@ async function colocarPokemonsEnLista(nombres) {
   let listaPokemones = document.querySelectorAll("#pokemon");
   for (let i = 0; i < nombres.length; i++) {
     listaPokemones[i].innerHTML = nombres[i].name;
-    console.log(nombres[i].name);
   }
 }
