@@ -1,24 +1,23 @@
-let contendenorPokemones = document.querySelector("#contenedorPokemones");
+let contenedorPokemones = document.querySelector("#contenedorPokemones");
 
-export async function mostrarPagina(arrayPokemones) {
-  const pokemones = await arrayPokemones;
-  await crearLista(contendenorPokemones, pokemones.results.length);
-  colocarPokemonsEnLista(pokemones.results);
+export async function mostrarPagina(pokemones) {
+  await crearLista(contenedorPokemones, pokemones.results.length);
+  colocarPokemonesLista(pokemones.results);
 }
 
-function crearElementosDeLista(elementoPadre) {
+function crearElementosLista(elementoPadre) {
   let div = document.createElement("div");
   let id = document.createAttribute("id");
   id.value = "pokemon";
   div.setAttributeNode(id);
   elementoPadre.appendChild(div);
 }
-async function crearLista(elementoPadre, cantidadDeElementos) {
-  for (let i = 0; i < cantidadDeElementos; i++) {
-    crearElementosDeLista(elementoPadre);
+async function crearLista(elementoPadre, cantidadElementos) {
+  for (let i = 0; i < cantidadElementos; i++) {
+    crearElementosLista(elementoPadre);
   }
 }
-async function colocarPokemonsEnLista(nombres) {
+function colocarPokemonesLista(nombres) {
   let listaPokemones = document.querySelectorAll("#pokemon");
   for (let i = 0; i < nombres.length; i++) {
     listaPokemones[i].innerHTML = nombres[i].name;
