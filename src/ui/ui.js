@@ -1,10 +1,5 @@
 export function mostrarPagina(pokemones) {
-  crearListaPokemones(pokemones);
-}
-
-function crearListaPokemones(pokemones) {
-  let contenedorPokemones = document.querySelector("#contenedorPokemones");
-
+  let contenedorPokemones = document.querySelector("#contenedor-pokemones");
   for (let i = 0; i < pokemones.length; i++) {
     const pokemon = pokemones[i];
     let div = document.createElement("div");
