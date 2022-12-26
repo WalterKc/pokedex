@@ -1,11 +1,12 @@
 import { obtenerPokemon } from "../service/service.js";
 import { obtenerPagina } from "../service/service.js";
+import { obtenerNumeroPaginas } from "../service/service.js";
+
 let PAGINA = 0;
 let PAGINAS_TOTALES = 0;
 let primeraPaginaHecha = false;
 export async function mostrarPagina(pokemones) {
   let contenedorPokemones = document.querySelector("#contenedor-pokemones");
-  console.log(pokemones);
   if (!primeraPaginaHecha) {
     for (let i = 0; i < pokemones.length; i++) {
       const pokemon = pokemones[i];
@@ -74,8 +75,6 @@ async function obtenerPaginasTotales(pokemonesPorPagina) {
 async function mostrarPokemon(e) {
   let datosPokemon = document.querySelector("#pokemon");
   const pokemon = await obtenerPokemon(e.target.id);
-  console.log(e.target.id);
-  //
   datosPokemon.querySelector("#pokemon .imagen").src =
     pokemon.sprites.front_default;
   datosPokemon.querySelector("#nombre").innerHTML = pokemon.name;
@@ -98,15 +97,9 @@ async function mostrarPokemon(e) {
   document.querySelector("#boton-volver").hidden = false;
 }
 
-async function selecionarPokemon(e) {
-  mostrarPokemon(await obtenerPokemon(e.target.id));
-}
-
 async function selecionarPagina(e) {
-  console.log(e.target.id);
   if (e.target.id === "boton-siguiente") {
     PAGINA += 1;
-
     mostrarPagina(await obtenerPagina(PAGINA));
   } else if (e.target.id === "boton-anterior") {
     PAGINA -= 1;
@@ -140,9 +133,9 @@ async function selecionarPagina(e) {
     document.querySelector("#boton-anterior").hidden = false;
     document.querySelector("#ir-pagina").hidden = false;
     document.querySelector("#boton-volver").hidden = true;
+    document.querySelector("#pokemon").hidden = true;
   }
 }
-import { obtenerNumeroPaginas } from "../service/service.js";
 
 document.querySelector("#contenedor-pokemones").onclick = mostrarPokemon;
 document.querySelector("#boton-volver").onclick = selecionarPagina;
