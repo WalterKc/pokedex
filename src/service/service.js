@@ -27,8 +27,10 @@ export async function obtenerPokemon(nombre) {
  *para hacer esto, primero hay que hacer algo que cuente las paginas que hay LISTO el numero de paginas
  *
  */
-//y luego , vamos a poner las imagenes, sin estilo(mas alla del nav), eso lo vamos a dejar para react
+//y luego , vamos a poner las imagenes, sin estilo(mas alla del nav), eso lo vamos a dejar para react LISTO
 /**
- * para poner las imagenes, tengo que ponerle un child al div ya creado
- * este child, es su imagen
+ * para poner las imagenes, tengo que ponerle un child al div ya creado LISTO
+ * este child, es su imagen LISTO
  */
+//ahora, vamos a ocultar el pokemon selec, y cada vez que se seleciones un pokemon, se oculte el contenedor,
+//y se muestre el pokemon,y cuando toquemos el boton volver, pase lo contrario

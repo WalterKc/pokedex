@@ -20,11 +20,14 @@ export async function mostrarPagina(pokemones) {
       div.innerHTML = pokemon.name;
       //por aca abajo, pongo las imagenes, puede estar mal planteado, asi que lo separo
       let pokemonDatos = await obtenerPokemon(pokemon.name);
+      let claseImg = document.createAttribute("class");
       let img = document.createElement("img");
       let idImg = document.createAttribute("id");
-      idImg.value = "imagen";
+      claseImg.value = "imagen";
+      idImg.value = pokemon.name;
       let src = document.createAttribute("src");
       src.value = pokemonDatos.sprites.front_default;
+      img.setAttributeNode(claseImg);
       img.setAttributeNode(idImg);
       img.setAttributeNode(src);
       div.appendChild(img);
@@ -39,11 +42,14 @@ export async function mostrarPagina(pokemones) {
       contenedorPokemones.querySelectorAll(".pokemon")[i].innerText =
         pokemon.name;
       let pokemonDatos = await obtenerPokemon(pokemon.name);
+      let claseImg = document.createAttribute("class");
       let img = document.createElement("img");
       let idImg = document.createAttribute("id");
-      idImg.value = "imagen";
+      claseImg.value = "imagen";
+      idImg.value = pokemon.name;
       let src = document.createAttribute("src");
       src.value = pokemonDatos.sprites.front_default;
+      img.setAttributeNode(claseImg);
       img.setAttributeNode(idImg);
       img.setAttributeNode(src);
       contenedorPokemones.querySelectorAll(".pokemon")[i].appendChild(img);
@@ -51,11 +57,9 @@ export async function mostrarPagina(pokemones) {
   }
 }
 async function obtenerPaginasTotales(pokemonesPorPagina) {
-  //console.log(await obtenerNumeroPaginas());
   PAGINAS_TOTALES = Math.ceil(
     (await obtenerNumeroPaginas()) / pokemonesPorPagina
   );
-  //console.log(PAGINAS_TOTALES);
   let paginas = document.querySelector("#selector-pagina");
   for (let i = 0; i < PAGINAS_TOTALES; i++) {
     let option = document.createElement("option");
@@ -66,34 +70,14 @@ async function obtenerPaginasTotales(pokemonesPorPagina) {
     paginas.appendChild(option);
   }
 }
-//este de aca abajo, se puede sacar
-function cambiarPagina(pagina) {
-  mostrarPagina(pagina);
-  //console.log(pagina)
-}
 
-async function traerImagen(pokemonRequerido) {
-  //tengo una idea, una funcion cruzada, uso los nombres que me manda el crearpagina, y se los envio
-  //al servicio que me trae un pokemon,y con eso, pongo las imagenes
-  //algo asi
-  let pokemon = await pokemonRequerido;
-  let img = document.createElement("img");
-  let id = document.createAttribute("id");
-  id.value = "imagen";
-  let src = document.createAttribute("src");
-  src.value = await pokemon.sprites.front_default;
-  img.setAttributeNode(id);
-  img.setAttributeNode(src);
-  return pokemon;
-  listaPokemonesActivos[i].appendChild(img);
-  //let pokemon1 = await obtenerPokemon(pokemon);
-  //return pokemon1;
-  //y armo desde aca
-}
-
-function mostrarPokemon(pokemon) {
+async function mostrarPokemon(e) {
   let datosPokemon = document.querySelector("#pokemon");
-  //const pokemon = await obtenerPokemon(e.target.id);
+  const pokemon = await obtenerPokemon(e.target.id);
+  console.log(e.target.id);
+  //
+  datosPokemon.querySelector("#pokemon .imagen").src =
+    pokemon.sprites.front_default;
   datosPokemon.querySelector("#nombre").innerHTML = pokemon.name;
   if (pokemon.types.length > 1) {
     document.querySelector("#tipo").innerHTML =
@@ -106,39 +90,28 @@ function mostrarPokemon(pokemon) {
     pokemon.abilities[0].ability.name + "/" + pokemon.abilities[1].ability.name;
   datosPokemon.querySelector("#altura").innerHTML =
     pokemon.height / 10 + " Mts";
+  datosPokemon.hidden = false;
+  document.querySelector("#contenedor-pokemones").hidden = true;
+  document.querySelector("#boton-siguiente").hidden = true;
+  document.querySelector("#boton-anterior").hidden = true;
+  document.querySelector("#ir-pagina").hidden = true;
+  document.querySelector("#boton-volver").hidden = false;
 }
-/// esto lo voy a dejar asi, total es super facil revertirlo
 
 async function selecionarPokemon(e) {
   mostrarPokemon(await obtenerPokemon(e.target.id));
 }
-//Falta con el valor maximo, pero lo vamos a dejar para cuando tenga el contador de paginas
+
 async function selecionarPagina(e) {
   console.log(e.target.id);
   if (e.target.id === "boton-siguiente") {
     PAGINA += 1;
 
-    //cabia adelante
-    //cambiarPagina(await obtenerPagina(PAGINA));
     mostrarPagina(await obtenerPagina(PAGINA));
-    /*
-    if (PAGINA > 1) {
-      document.querySelector("#boton-anterior").hidden = false;
-    }
-    */
   } else if (e.target.id === "boton-anterior") {
-    /*
-    if (PAGINA === 1) {
-      document.querySelector("#boton-anterior").hidden = true;
-    }
-    */
     PAGINA -= 1;
-    //cambiarPagina(await obtenerPagina(PAGINA));
     mostrarPagina(await obtenerPagina(PAGINA));
-
-    //cambia atras
   } else if (Number(document.querySelector("#selector-pagina").value) > 0) {
-    //console.log(Number(document.querySelector("#selector-pagina").value));
     mostrarPagina(
       await obtenerPagina(
         Number(document.querySelector("#selector-pagina").value)
@@ -161,14 +134,18 @@ async function selecionarPagina(e) {
   } else if (PAGINA > 1) {
     document.querySelector("#boton-anterior").hidden = false;
   }
-
-  //cambiarPagina()
-  ///
+  if (e.target.id === "boton-volver") {
+    document.querySelector("#contenedor-pokemones").hidden = false;
+    document.querySelector("#boton-siguiente").hidden = false;
+    document.querySelector("#boton-anterior").hidden = false;
+    document.querySelector("#ir-pagina").hidden = false;
+    document.querySelector("#boton-volver").hidden = true;
+  }
 }
 import { obtenerNumeroPaginas } from "../service/service.js";
 
-document.querySelector("#contenedor-pokemones").onclick = selecionarPokemon;
+document.querySelector("#contenedor-pokemones").onclick = mostrarPokemon;
+document.querySelector("#boton-volver").onclick = selecionarPagina;
 document.querySelector("#boton-siguiente").onclick = selecionarPagina;
 document.querySelector("#boton-anterior").onclick = selecionarPagina;
-//
 document.querySelector("#ir-pagina").onclick = selecionarPagina;
