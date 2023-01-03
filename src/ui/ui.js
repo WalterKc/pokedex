@@ -42,6 +42,7 @@ export async function mostrarPagina(pokemones) {
       contenedorPokemones.querySelectorAll(".pokemon")[i].id = pokemon.name;
       contenedorPokemones.querySelectorAll(".pokemon")[i].innerText =
         pokemon.name;
+
       let pokemonDatos = await obtenerPokemon(pokemon.name);
       let claseImg = document.createAttribute("class");
       let img = document.createElement("img");
