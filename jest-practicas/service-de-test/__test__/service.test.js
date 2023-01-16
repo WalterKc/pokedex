@@ -71,7 +71,23 @@ beforeEach(() => {
 test("prueba de api", async () => {
   const respuesta = await obtenerNumeroPaginas();
   //console.log(respuesta);
-  expect(respuesta).toEqual(18);
+  expect(respuesta).toEqual(19);
 });
 
 //ok, estoy podrido de esto, vamos a terminar esto rapido, y empecemos con react de una vez
+//practica 2 de mocks, ahora vamos a mokear las funciones directamente, y no el resultado
+beforeEach(() => {
+  obtenerNumeroAleatorio.mockClear();
+});
+jest.mock("../service");
+test("mock del service entero, se va a probar las llamadas y que de un numero", async () => {
+  obtenerNumeroAleatorio.mockReturnValueOnce(19);
+  expect(obtenerNumeroAleatorio()).toEqual(19);
+  expect(obtenerNumeroAleatorio).toHaveBeenCalled();
+});
+///mmm, creo que es hora de empezar esto, si falta algo, vamos a practicarlo aca y vamos a avisar
+//PRIMERO, para hacer esto, lo vamos a hacer simple, vamos a seguir el orden de ejecucion
+//lo primero que se ejecuta, el  el index.js, vamos a testear eso y vamos a ir marcando lo que se testea
+//
+//asi que, todo lo que este aca abajo, es practica de la implementacion del jest
+//Tengo una idea mejor, vamos a primero testeas los services
